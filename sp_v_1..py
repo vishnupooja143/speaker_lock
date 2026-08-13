@@ -1559,3 +1559,15 @@ class SpeakerLockAudioProcessor(rtc.FrameProcessor):
             except Exception as e:
                 logger.error(f"Failed to write {fname}: {e}")
         logger.info(f"📊 {self._speaker_lock.stats_str()}")
+# Install dependencies
+pip install asteroid torch torchaudio wespeaker
+
+# Enable separation & neural embedding
+export SPEAKER_SEPARATION=true
+export SEPARATION_MODEL="speechbrain/sepformer-libri3mix"   # Best for 2–3 speakers
+export SEPARATION_WINDOW_S=3.0                               # 3s buffer for clean separation
+export USE_NEURAL_EMBEDDING=true                             # ECAPA-TDNN for ultra-discriminative scoring
+export COSINE_THRESHOLD=0.48                                 # Slightly lower to compensate for artifacts
+export SPEAKER_ADAPT_MIN=0.30                                # Allow the lock to go lower if needed
+
+python your_agent.py
