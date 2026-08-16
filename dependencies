@@ -1,0 +1,6 @@
+# Install dependencies
+pip install speechbrain torchaudio
+
+# Run offline dashboard
+cd E:\ANCA
+run_offline.bat
