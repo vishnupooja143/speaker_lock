@@ -351,3 +351,18 @@ if __name__ == "__main__":
         print("\n🎉 LOW LATENCY ECAPA-TDNN working correctly!")
     except Exception as e:
         print(f"❌ Test failed: {e}")
+
+
+
+
+# Enable early exit (recommended for live)
+EMBEDDING_EARLY_EXIT=true
+
+# Window overlap ratio (0.0 = no overlap, 0.5 = 50% overlap)
+WINDOW_OVERLAP_RATIO=0.25
+
+# Minimum audio length in samples at 8kHz
+MIN_AUDIO_SAMPLES_8K=1600
+
+# Ideal window size in samples at 8kHz  
+IDEAL_AUDIO_SAMPLES_8K=2400
