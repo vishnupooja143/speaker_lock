@@ -1549,3 +1549,29 @@ class SpeakerLockAudioProcessor(rtc.FrameProcessor):
             except Exception:
                 pass
         logger.info(f"📊 {self._speaker_lock.stats_str()}")
+
+
+
+
+
+
+#------------------------------------------------------------
+# ==========================================
+# 🆘 OVERLAP RESCUE PROTOCOL
+# ==========================================
+if not accepted:
+    # 1. Are we in the "Rescue Zone"? (Above hard reject, below threshold)
+    is_borderline = raw_similarity > _HARD_REJECT_COSINE
+    
+    # 2. Is the voice LOUD? (Customer is usually close to mic)
+    is_loud = rms_val > (1.5 * self._bg_rms_ema)
+    
+    # 3. Does the PITCH match the customer?
+    pitch_match = False
+    if chunk_f0 > 0 and self._profile_f0_median is not None:
+        tol = max(40.0, self._profile_f0_median * 0.20)
+        pitch_match = abs(chunk_f0 - self._profile_f0_median) < tol
+    
+    # RESCUE DECISION
+    if is_borderline and is_loud and pitch_match:
+        accepted = True
